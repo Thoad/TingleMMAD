@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Tingle</string>
+    <string name="headline">Last thing added:</string>
+    <string name="last_thing">last thing</string>
+
+    <string name="heading_create">Add item</string>
+    <string name="to_list_view">Show things</string>
+
+    <string name="what_thing">What item?</string>
+    <string name="where">Where?</string>
+    <string name="title_activity_list">ListActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_thing_list">ThingListActivity</string>
+    <string name="action_settings">Settings</string>
+</resources>
