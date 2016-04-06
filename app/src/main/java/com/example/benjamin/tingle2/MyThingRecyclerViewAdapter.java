@@ -1,12 +1,15 @@
 package com.example.benjamin.tingle2;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.benjamin.tingle2.ThingFragment.OnListFragmentInteractionListener;                // Note to self; IDE puts dummy code in sneaky places.
+import com.example.benjamin.tingle2.ListFragment.OnListFragmentInteractionListener;                // Note to self; IDE puts dummy code in sneaky places.
+import com.example.benjamin.tingle2.database.TingleBaseHelper;
 
 import java.util.List;
 
@@ -17,12 +20,18 @@ import java.util.List;
  */
 public class MyThingRecyclerViewAdapter extends RecyclerView.Adapter<MyThingRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Thing> mValues;
+    // Database
+
+    private List<Thing> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyThingRecyclerViewAdapter(List<Thing> items, OnListFragmentInteractionListener listener) {
+    public MyThingRecyclerViewAdapter(Context context, List<Thing> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+    }
+
+    public void getThingsAgain(TingleBaseHelper dbH, SQLiteDatabase db){
+        mValues = dbH.getThings(db);
     }
 
     @Override

@@ -109,7 +109,7 @@ public class TingleFragment extends Fragment implements Observer {
             @Override
             public void onClick(View view){
                 // Start ListActivity
-                Intent intent = new Intent(getContext(), ThingListActivity.class);                       // Start ListActivity / fragment the right way
+                Intent intent = new Intent(getContext(), ListOfThingsActivity.class);                       // Start ListActivity / fragment the right way
                 startActivity(intent);
             }
         });

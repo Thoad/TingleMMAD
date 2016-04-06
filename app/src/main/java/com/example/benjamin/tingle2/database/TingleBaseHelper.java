@@ -21,6 +21,8 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "thingsBase.db";
     private DBObservable notifyer = null;
 
+    private static List<Thing> _things = null;
+
     public TingleBaseHelper(Context context){
         super(context, DATABASE_NAME, null, VERSION);
         notifyer = DBObservable.get();
@@ -49,6 +51,8 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
 
         db.insert(ThingTable.NAME, null, value);
 
+        _things = getThings(db);
+
         notifyer.invalidate();
         notifyer.notifyObs();
     }
@@ -71,6 +75,8 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
         db.delete(ThingTable.NAME,
                   ThingTable.Cols.WHAT + " = ?",
                   new String[]{what} );
+
+        _things = getThings(db);
 
         notifyer.invalidate();
         notifyer.notifyObs();
@@ -114,21 +120,21 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
     }
 
     public List<Thing> getThings(SQLiteDatabase db){
-        List<Thing> things = new ArrayList<>();
+        _things = new ArrayList<>();
 
         ThingCursorWrapper cursor = queryThingsPrivate(null, null, db);
 
         try{
             cursor.moveToFirst();
             while(!cursor.isAfterLast()){
-                things.add(cursor.getThing());
+                _things.add(cursor.getThing());
                 cursor.moveToNext();
             }
         }
         finally {
             cursor.close();
         }
-        return things;
+        return _things;
     }
 
 

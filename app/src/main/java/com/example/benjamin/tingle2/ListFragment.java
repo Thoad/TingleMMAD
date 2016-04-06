@@ -22,7 +22,7 @@ import java.util.Observer;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ThingFragment extends Fragment implements Observer {
+public class ListFragment extends Fragment implements Observer {
 
     // TODO: Customize parameters
     private int mColumnCount = 1;
@@ -41,11 +41,12 @@ public class ThingFragment extends Fragment implements Observer {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ThingFragment() { }
+    public ListFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mContext = getActivity().getApplicationContext();
         mDBHelper = new TingleBaseHelper(mContext);
         mDatabase = mDBHelper.getWritableDatabase();
@@ -71,7 +72,7 @@ public class ThingFragment extends Fragment implements Observer {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            mAdapter = new MyThingRecyclerViewAdapter(mDBHelper.getThings(mDatabase), mListener);
+            mAdapter = new MyThingRecyclerViewAdapter(getContext(), mDBHelper.getThings(mDatabase), mListener);
             recyclerView.setAdapter(mAdapter);
         }
         return view;
@@ -97,8 +98,14 @@ public class ThingFragment extends Fragment implements Observer {
 
     @Override
     public void update(Observable observable, Object data) {
+
+        ((MyThingRecyclerViewAdapter) mAdapter).getThingsAgain(mDBHelper, mDatabase);
         mAdapter.notifyDataSetChanged();
+        System.out.println("Am i being Called? Yes, But how do i update myself?!?");
     }
+
+
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -113,4 +120,6 @@ public class ThingFragment extends Fragment implements Observer {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Thing thing);
     }
+
+
 }
