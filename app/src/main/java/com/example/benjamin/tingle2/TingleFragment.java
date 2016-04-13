@@ -153,8 +153,8 @@ public class TingleFragment extends Fragment implements Observer {
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
                 newWhat.setText(contents);
-                mParentView.invalidate();
-                 // System.out.println("This is content: " + contents + " And this is format: " + format);
+                // mParentView.invalidate(); // SetText() calls this
+                // System.out.println("This is content: " + contents + " And this is format: " + format);
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
             // Handle cancel

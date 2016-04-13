@@ -14,7 +14,8 @@ import com.example.benjamin.tingle2.database.TingleBaseHelper;
 public class MainActivity extends AppCompatActivity implements ListFragment.OnListFragmentInteractionListener, TingleFragment.OnFragmentInteractionListener{
 
     FragmentManager fm = null;
-    Fragment fragmentRight = null;
+    Fragment mListFragment = new ListFragment();
+    Fragment mTingleFragment = new TingleFragment();
 
     // Database
     private Context mContext;
@@ -47,9 +48,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnLi
         Fragment fragment =
                 fm.findFragmentById(R.id.fragment_tingle_container);
         if (fragment == null) {
-            fragment = new TingleFragment();
             fm.beginTransaction()
-                    .add(R.id.fragment_tingle_container, fragment)
+                    .add(R.id.fragment_tingle_container, mTingleFragment)
                     .commit();
         }
     }
@@ -59,18 +59,16 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnLi
         Fragment fragmentLeft =
                 fm.findFragmentById(R.id.left_fragment_container);
         if (fragmentLeft == null) {
-            fragmentLeft = new TingleFragment();
             fm.beginTransaction()
-                    .add(R.id.left_fragment_container, fragmentLeft)
+                    .add(R.id.left_fragment_container, mTingleFragment)
                     .commit();
         }
 
         Fragment fragmentRight =
                 fm.findFragmentById(R.id.right_fragment_container);
         if (fragmentRight == null) {
-            fragmentRight = new ListFragment();
             fm.beginTransaction()
-                    .add(R.id.right_fragment_container, fragmentRight)
+                    .add(R.id.right_fragment_container, mListFragment)
                     .commit();
         }
     }
