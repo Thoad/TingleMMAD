@@ -1,8 +1,11 @@
 package com.example.benjamin.tingle2;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
 
@@ -37,6 +41,8 @@ public class TingleFragment extends Fragment implements Observer {
     private Context mContext;
     private TingleBaseHelper mDBHelper;
     private SQLiteDatabase mDatabase;
+
+    private View mParentView;
 
     // Listener
     private OnFragmentInteractionListener mListener;
@@ -74,20 +80,20 @@ public class TingleFragment extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_tingle, container, false);
+        mParentView = inflater.inflate(R.layout.fragment_tingle, container, false);
 
         //Accessing GUI element. Update last text changed
-        lastAdded = (TextView) v.findViewById(R.id.last_thing);
+        lastAdded = (TextView) mParentView.findViewById(R.id.last_thing);
         updateUI();
 
         // Buttons. Get buttons
-        addThing = (Button) v.findViewById(R.id.add_button);
-        showThings = (Button) v.findViewById(R.id.show_things_button);
-        scanButton = (Button) v.findViewById(R.id.scan_button);
+        addThing = (Button) mParentView.findViewById(R.id.add_button);
+        showThings = (Button) mParentView.findViewById(R.id.show_things_button);
+        scanButton = (Button) mParentView.findViewById(R.id.scan_button);
 
         // Textfields for describing a thing
-        newWhat = (TextView) v.findViewById(R.id.what_text);
-        newWhere = (TextView) v.findViewById(R.id.where_text);
+        newWhat = (TextView) mParentView.findViewById(R.id.what_text);
+        newWhere = (TextView) mParentView.findViewById(R.id.where_text);
 
         // Click event
         addThing.setOnClickListener(new View.OnClickListener() {
@@ -119,11 +125,42 @@ public class TingleFragment extends Fragment implements Observer {
             @Override
             public void onClick(View view){
                 // Start scan application with implicit intent
-                System.out.println("Kreim");
+                System.out.println("Scan pressed. OnClickListener");
+
+                try{
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+                    startActivityForResult(intent, 0);
+                }catch (ActivityNotFoundException anfe){
+                    System.out.println("Scanner not found");
+                    scanButton.setBackgroundColor(Color.RED);
+                }
+
             }
         });
 
-        return v;
+        return mParentView;
+    }
+
+    //@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Handle successful scan
+                System.out.println("Scanning action was succesfull");
+
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+
+                newWhat.setText(contents);
+                mParentView.invalidate();
+                 // System.out.println("This is content: " + contents + " And this is format: " + format);
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+            // Handle cancel
+                System.out.println("Scanning action was cancelled");
+            }
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
