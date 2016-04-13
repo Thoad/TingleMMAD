@@ -30,7 +30,7 @@ import java.util.Observer;
 public class TingleFragment extends Fragment implements Observer {
 
     // GUI variables
-    private Button addThing, showThings;
+    private Button addThing, scanButton, showThings;
     private TextView lastAdded, newWhat, newWhere;
 
     // Database
@@ -83,6 +83,7 @@ public class TingleFragment extends Fragment implements Observer {
         // Buttons. Get buttons
         addThing = (Button) v.findViewById(R.id.add_button);
         showThings = (Button) v.findViewById(R.id.show_things_button);
+        scanButton = (Button) v.findViewById(R.id.scan_button);
 
         // Textfields for describing a thing
         newWhat = (TextView) v.findViewById(R.id.what_text);
@@ -111,6 +112,14 @@ public class TingleFragment extends Fragment implements Observer {
                 // Start ListActivity
                 Intent intent = new Intent(getContext(), ListOfThingsActivity.class);                       // Start ListActivity / fragment the right way
                 startActivity(intent);
+            }
+        });
+
+        scanButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                // Start scan application with implicit intent
+                System.out.println("Kreim");
             }
         });
 

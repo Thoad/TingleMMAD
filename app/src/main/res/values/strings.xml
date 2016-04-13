@@ -4,6 +4,7 @@
     <string name="last_thing">last thing</string>
 
     <string name="heading_create">Add item</string>
+    <string name="scan_text">Scan</string>
     <string name="to_list_view">Show things</string>
 
     <string name="what_thing">What item?</string>
