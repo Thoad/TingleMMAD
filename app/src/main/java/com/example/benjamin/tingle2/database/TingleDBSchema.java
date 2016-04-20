@@ -8,6 +8,7 @@ public class TingleDBSchema {
         public static final String NAME = "things";
 
         public static final class Cols {
+            public  static final String  ID = "idCol";
             public  static final String  WHAT = "whatCol";
             public  static final String  WHERE = "whereCol";
         }

@@ -40,7 +40,7 @@ public class ListOfThingsActivity extends AppCompatActivity implements ListFragm
     public void onListFragmentInteraction(Thing thing) {
         mDBHelper.deleteThing(thing, mDatabase);
 
-        System.out.println("Thing has been deleted!");
+        System.out.println("Thing has been deleted! with id: " + thing.getId());
 
         // Update / redraw view
         //refreshFragment();

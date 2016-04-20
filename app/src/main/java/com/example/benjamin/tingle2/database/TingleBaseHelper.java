@@ -41,8 +41,8 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * Add the givin thing to the givin database, by transforming to ContentValues first.
-     * No exception handling... at all :)
+     * Add the given thing to the given database, by transforming to ContentValues first.
+     * No exception handling... at all :) DB adds id.
      * @param thing
      * @param db
      */
@@ -58,23 +58,23 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
     }
 
     public void updateThing(Thing thing, SQLiteDatabase db){
-        String what = thing.getWhat();
+        int id = thing.getId();
         ContentValues value = toContentValue(thing);
 
         db.update(ThingTable.NAME,
                 value,
-                ThingTable.Cols.WHAT + " = ?",
-                new String[]{what});
+                ThingTable.Cols.ID + " = ?",
+                new String[]{Integer.toString(id)});
 
         notifyer.invalidate();
         notifyer.notifyObs();
     }
 
     public void deleteThing(Thing thing, SQLiteDatabase db){
-        String what = thing.getWhat();
+        int id = thing.getId();
         db.delete(ThingTable.NAME,
-                  ThingTable.Cols.WHAT + " = ?",
-                  new String[]{what} );
+                  ThingTable.Cols.ID + " = ?",
+                  new String[]{Integer.toString(id)} );
 
         _things = getThings(db);
 
@@ -99,10 +99,10 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
         return new ThingCursorWrapper(cursor);
     }
 
-    public Thing getThing(String what, SQLiteDatabase db){
+    public Thing getThing(int id, SQLiteDatabase db){
         ThingCursorWrapper cursor = queryThingsPrivate(
-                ThingTable.Cols.WHAT + " = ?",
-                new String[] {what},
+                ThingTable.Cols.ID + " = ?",
+                new String[] {Integer.toString(id)},
                 db
         );
 
@@ -142,8 +142,7 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("create table " + ThingTable.NAME +
-                        "(" + " _id integer primary key autoincrement, " +
+        db.execSQL("create table " + ThingTable.NAME + "(" + ThingTable.Cols.ID + " integer primary key autoincrement, " +
                         ThingTable.Cols.WHAT + ", " +
                         ThingTable.Cols.WHERE +
                         ")"

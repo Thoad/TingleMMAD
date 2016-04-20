@@ -5,13 +5,14 @@
     android:orientation="horizontal"
     android:paddingBottom="8dp">
 
+
     <TextView
         android:id="@+id/What"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"  />
 
     <TextView
         android:id="@+id/Where"
@@ -23,7 +24,7 @@
         android:layout_alignParentTop="true" />
 
     <View
-        android:layout_alignBottom="@+id/What"
+        android:layout_alignBottom="@id/What"
         android:paddingTop="8dp"
         android:background="#c7c7c7"
         android:layout_width="match_parent"

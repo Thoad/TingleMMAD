@@ -14,10 +14,11 @@ public class ThingCursorWrapper extends CursorWrapper {
     }
 
     public Thing getThing(){
+        int id = getInt(getColumnIndex(TingleDBSchema.ThingTable.Cols.ID));
         String what = getString(getColumnIndex(TingleDBSchema.ThingTable.Cols.WHAT));
         String where = getString(getColumnIndex(TingleDBSchema.ThingTable.Cols.WHERE));
 
-        Thing thing = new Thing(what, where);
+        Thing thing = new Thing(id, what, where);
 
         return thing;
     }
