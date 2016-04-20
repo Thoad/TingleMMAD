@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
+import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -22,7 +23,7 @@ import java.util.Observer;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ListFragment extends Fragment implements Observer {
+public class ListFragment extends Fragment implements Observer, OnListFragmentInteractionListener {
 
     // TODO: Customize parameters
     private int mColumnCount = 1;
@@ -82,12 +83,14 @@ public class ListFragment extends Fragment implements Observer {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mListener = this;
+        /* Not the activity in which this fragment lives, but this as listener
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
@@ -101,25 +104,13 @@ public class ListFragment extends Fragment implements Observer {
 
         ((MyThingRecyclerViewAdapter) mAdapter).getThingsAgain(mDBHelper, mDatabase);
         mAdapter.notifyDataSetChanged();
-        System.out.println("Am i being Called? Yes, But how do i update myself?!?");
+        System.out.println("Am i being Called? Yes, But how do i update myself?!? Barcode");
     }
 
-
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Thing thing);
+    @Override
+    public void onListFragmentInteraction(Thing thing) {
+        System.out.println("Thing has been deleted from fragment! with id: " + thing.getId());
+        mDBHelper.deleteThing(thing, mDatabase);
     }
-
 
 }

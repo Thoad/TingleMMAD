@@ -8,8 +8,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
+import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;
 
-public class ListOfThingsActivity extends AppCompatActivity implements ListFragment.OnListFragmentInteractionListener{
+public class ListOfThingsActivity extends AppCompatActivity {
 
     // Database
     private Context mContext;
@@ -34,20 +35,5 @@ public class ListOfThingsActivity extends AppCompatActivity implements ListFragm
                     .add(R.id.list_container, fragment)
                     .commit();
         }
-    }
-
-    @Override
-    public void onListFragmentInteraction(Thing thing) {
-        mDBHelper.deleteThing(thing, mDatabase);
-
-        System.out.println("Thing has been deleted! with id: " + thing.getId());
-
-        // Update / redraw view
-        //refreshFragment();
-    }
-
-    private void refreshFragment(){
-        Fragment fragment = new ListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.list_container, fragment).commit();
     }
 }

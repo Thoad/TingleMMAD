@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.benjamin.tingle2.ListFragment.OnListFragmentInteractionListener;                // Note to self; IDE puts dummy code in sneaky places.
+import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;                // Note to self; IDE puts dummy code in sneaky places.
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
 
 import java.util.List;

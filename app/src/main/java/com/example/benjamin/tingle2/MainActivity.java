@@ -10,8 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
+import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;
 
-public class MainActivity extends AppCompatActivity implements ListFragment.OnListFragmentInteractionListener, TingleFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements TingleFragment.OnFragmentInteractionListener{
 
     FragmentManager fm = null;
     Fragment mListFragment = new ListFragment();
@@ -73,12 +74,6 @@ public class MainActivity extends AppCompatActivity implements ListFragment.OnLi
         }
     }
 
-    @Override
-    public void onListFragmentInteraction(Thing thing) {
-        mDBHelper.deleteThing(thing, mDatabase);
-
-        System.out.println("Thing has been deleted!");
-    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
