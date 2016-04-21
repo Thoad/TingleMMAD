@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,9 +16,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
+import com.example.benjamin.tingle2.networking.OutpanFetcher;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -135,7 +137,6 @@ public class TingleFragment extends Fragment implements Observer {
                     System.out.println("Scanner not found");
                     scanButton.setBackgroundColor(Color.RED);
                 }
-
             }
         });
 
@@ -154,10 +155,13 @@ public class TingleFragment extends Fragment implements Observer {
 
                 newWhat.setText(contents);
                 // mParentView.invalidate(); // SetText() calls this
-                // System.out.println("This is content: " + contents + " And this is format: " + format);
 
+                // Do Outpan Search on another thread
+                    FetchNetworkItemsTask fetcher = new FetchNetworkItemsTask(getContext(), contents);
+                    fetcher.execute();
+                    // newWhat.setText(); // Need to be done on UI thread!!!
             } else if (resultCode == Activity.RESULT_CANCELED) {
-            // Handle cancel
+                // Handle cancel
                 System.out.println("Scanning action was cancelled");
             }
         }
@@ -211,5 +215,50 @@ public class TingleFragment extends Fragment implements Observer {
         if (s.size()>0) {
             lastAdded.setText(s.get(s.size()-1).toString());
         }
+    }
+
+
+
+    /**
+     * InnerClass to run networking in worker thread
+     */
+    public class FetchNetworkItemsTask extends AsyncTask<Void,Void,String> {
+        Context mContext = null;
+        String mCode = null;
+        Exception mException = null;
+
+        public FetchNetworkItemsTask(Context context, String code){
+            mContext = context;
+            mCode = code;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String jsonstring = null;
+            try {
+                OutpanFetcher of = new OutpanFetcher(mContext);
+                jsonstring = of.getUrlString(mCode);
+
+            } catch (IOException ioe) {
+                mException = ioe;
+            }
+            return jsonstring;
+        }
+
+        @Override
+        protected void onPostExecute(String jsonstring){
+            if (mException != null){
+                // Display network error message
+                mException.printStackTrace();
+                System.out.println("Show error dialog / toast etc.");
+                return;
+            }
+            // Sæt GUI what box
+            newWhat.setText(jsonstring);
+        }
+
+
+
+
     }
 }

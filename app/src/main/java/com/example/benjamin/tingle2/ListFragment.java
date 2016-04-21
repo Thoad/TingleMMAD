@@ -24,7 +24,6 @@ import java.util.Observer;
  * interface.
  */
 
-// Test of kreim
 public class ListFragment extends Fragment implements Observer, OnListFragmentInteractionListener {
 
     // TODO: Customize parameters
