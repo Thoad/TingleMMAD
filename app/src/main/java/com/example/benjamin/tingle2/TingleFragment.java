@@ -17,7 +17,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
+import com.example.benjamin.tingle2.networking.JsonConvert;
 import com.example.benjamin.tingle2.networking.OutpanFetcher;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.List;
@@ -220,7 +223,7 @@ public class TingleFragment extends Fragment implements Observer {
 
 
     /**
-     * InnerClass to run networking in worker thread
+     * InnerClass to run networking and JSONConvert in worker thread
      */
     public class FetchNetworkItemsTask extends AsyncTask<Void,Void,String> {
         Context mContext = null;
@@ -234,27 +237,33 @@ public class TingleFragment extends Fragment implements Observer {
 
         @Override
         protected String doInBackground(Void... params) {
-            String jsonstring = null;
+            String itemName = null;
             try {
                 OutpanFetcher of = new OutpanFetcher(mContext);
-                jsonstring = of.getUrlString(mCode);
+                String jsonstring = of.getUrlString(mCode);
+                if (jsonstring == null){ throw new IOException("Result is empty"); }
+                JsonConvert jc = new JsonConvert();
+                itemName = jc.parseJsonString(jsonstring);
 
             } catch (IOException ioe) {
                 mException = ioe;
+            } catch ( JSONException je){
+                mException = je;
             }
-            return jsonstring;
+
+            return itemName;
         }
 
         @Override
-        protected void onPostExecute(String jsonstring){
+        protected void onPostExecute(String itemName){
             if (mException != null){
                 // Display network error message
                 mException.printStackTrace();
-                System.out.println("Show error dialog / toast etc.");
+                System.out.println("Show error dialog / toast etc. that reflect right Exception");
                 return;
             }
             // Sæt GUI what box
-            newWhat.setText(jsonstring);
+            newWhat.setText(itemName);
         }
 
 

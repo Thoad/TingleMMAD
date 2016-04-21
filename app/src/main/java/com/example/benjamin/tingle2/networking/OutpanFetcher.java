@@ -38,8 +38,8 @@ public class OutpanFetcher {
      * @return The result as an byte[]
      * @throws IOException
      */
-    public byte[] getUrlBytes(String code) throws IOException {
-        if (!isOnline()){ throw new IOException("The app cannot connect to the internet"); }
+    private byte[] getUrlBytes(String code) throws IOException {
+        //if (!isOnline()){ throw new IOException("The app cannot connect to the internet"); }
 
         String UrlString = OutpanApiGet + code + OutpanApiKey;
         URL url = new URL(UrlString);
