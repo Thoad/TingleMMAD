@@ -23,6 +23,8 @@ import java.util.Observer;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
+
+// Test of kreim
 public class ListFragment extends Fragment implements Observer, OnListFragmentInteractionListener {
 
     // TODO: Customize parameters
