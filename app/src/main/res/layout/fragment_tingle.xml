@@ -8,7 +8,7 @@
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <!-- Last thing added (skal nok stå i relation til hinanden horizontalt)-->
@@ -16,11 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="26dp"
+        android:textSize="26sp"
         android:text="@string/headline"/>
 
     <TextView android:id="@+id/last_thing"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textColor="#ff0000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -43,14 +43,15 @@
             android:textSize="20sp"
             android:text="@string/what_thing"
             android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:layout_weight="0"/>
 
         <EditText android:id="@+id/what_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:hint="e.g. keys"
-            android:layout_weight="1"/>
+            android:hint="@string/e_g_keys"
+            android:layout_weight="1" />
 
         <Button android:id="@+id/scan_button"
             android:layout_width="wrap_content"
@@ -71,6 +72,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:text="@string/where"/>
 
         <EditText android:id="@+id/where_text"
@@ -78,7 +80,7 @@
             android:layout_height="wrap_content"
 
             android:textSize="20sp"
-            android:hint="e.g. table" />
+            android:hint="@string/e_g_table" />
     </LinearLayout>
 
     <!-- Button to add new items -->

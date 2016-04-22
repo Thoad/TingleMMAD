@@ -10,11 +10,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
 import com.example.benjamin.tingle2.networking.JsonConvert;
@@ -40,14 +44,18 @@ public class TingleFragment extends Fragment implements Observer {
 
     // GUI variables
     private Button addThing, scanButton, showThings;
-    private TextView lastAdded, newWhat, newWhere;
+    private TextView lastAdded, newWhat, newWhere, noServiceTextview;
 
     // Database
     private Context mContext;
     private TingleBaseHelper mDBHelper;
     private SQLiteDatabase mDatabase;
 
+    // Parent view
     private View mParentView;
+
+    // Toast layout
+    View toastLayout;
 
     // Listener
     private OnFragmentInteractionListener mListener;
@@ -84,6 +92,9 @@ public class TingleFragment extends Fragment implements Observer {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Toast layout
+        toastLayout = inflater.inflate(R.layout.no_internet_toast, (ViewGroup) getActivity().findViewById(R.id.toastLayout));
+
         // Inflate the layout for this fragment
         mParentView = inflater.inflate(R.layout.fragment_tingle, container, false);
 
@@ -99,6 +110,7 @@ public class TingleFragment extends Fragment implements Observer {
         // Textfields for describing a thing
         newWhat = (TextView) mParentView.findViewById(R.id.what_text);
         newWhere = (TextView) mParentView.findViewById(R.id.where_text);
+        noServiceTextview = (TextView) toastLayout.findViewById(R.id.noServiceTextview);
 
         // Click event
         addThing.setOnClickListener(new View.OnClickListener() {
@@ -160,9 +172,11 @@ public class TingleFragment extends Fragment implements Observer {
                 // mParentView.invalidate(); // SetText() calls this
 
                 // Do Outpan Search on another thread
-                    FetchNetworkItemsTask fetcher = new FetchNetworkItemsTask(getContext(), contents);
-                    fetcher.execute();
-                    // newWhat.setText(); // Need to be done on UI thread!!!
+                Toast.makeText(getActivity().getApplicationContext(), "Checking code online", Toast.LENGTH_SHORT).show();
+
+                FetchNetworkItemsTask fetcher = new FetchNetworkItemsTask(getContext(), contents);
+                fetcher.execute();
+
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // Handle cancel
                 System.out.println("Scanning action was cancelled");
@@ -245,10 +259,8 @@ public class TingleFragment extends Fragment implements Observer {
                 JsonConvert jc = new JsonConvert();
                 itemName = jc.parseJsonString(jsonstring);
 
-            } catch (IOException ioe) {
+            } catch (IOException | JSONException ioe) {
                 mException = ioe;
-            } catch ( JSONException je){
-                mException = je;
             }
 
             return itemName;
@@ -260,13 +272,54 @@ public class TingleFragment extends Fragment implements Observer {
                 // Display network error message
                 mException.printStackTrace();
                 System.out.println("Show error dialog / toast etc. that reflect right Exception");
+
+                // Display toast with exception
+                if (mException instanceof IOException){
+                    noServiceTextview.setText("Problem with network connection");
+                }else if(mException instanceof JSONException){
+                    noServiceTextview.setText("Problem with outpan response JSON conversion");
+                }else{
+                    noServiceTextview.setText("Unknown problem... sucks.");
+                }
+
+                displayOutanFailureToast();
+
                 return;
+            }else{
+                if (!uselessNameChecker(itemName)) {
+                    noServiceTextview.setText("No data from Outpan");
+                    displayOutanFailureToast();
+                    return;
+                }
+
+                newWhat.setText(itemName);
             }
-            // Sæt GUI what box
-            newWhat.setText(itemName);
         }
 
+        /**
+         * Check is a name is useless
+         * @param name string to check
+         * @return True if name is USEFULL, false if name is USELESS
+         */
+        private boolean uselessNameChecker(String name){
+            String[] uselessNames = {"null", "", "nil", "no data", " "};
 
+            for (String uselessName: uselessNames) {
+                if (name.equals(uselessName)){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void displayOutanFailureToast(){
+            // Display error toast
+            Toast toast = new Toast(getActivity().getApplicationContext());
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(toastLayout);
+            toast.show();
+        }
 
 
     }
