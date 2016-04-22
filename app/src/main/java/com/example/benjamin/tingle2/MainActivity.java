@@ -14,9 +14,9 @@ import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener
 
 public class MainActivity extends AppCompatActivity implements TingleFragment.OnFragmentInteractionListener{
 
-    FragmentManager fm = null;
-    Fragment mListFragment = new ListFragment();
-    Fragment mTingleFragment = new TingleFragment();
+    private FragmentManager fm = null;
+    private Fragment mListFragment = new ListFragment();
+    private Fragment mTingleFragment = new TingleFragment();
 
     // Database
     private Context mContext;
@@ -46,22 +46,20 @@ public class MainActivity extends AppCompatActivity implements TingleFragment.On
 
     private void onPortrait(){
         // Put fragment into layout, create view
-        Fragment fragment =
-                fm.findFragmentById(R.id.fragment_tingle_container);
+        Fragment fragment = fm.findFragmentById(R.id.fragment_tingle_container);
         if (fragment == null) {
             fm.beginTransaction()
-                    .add(R.id.fragment_tingle_container, mTingleFragment)
+                    .replace(R.id.fragment_tingle_container, mTingleFragment)
                     .commit();
         }
     }
 
     private void onLandscape(){
         // Put fragment into layout, create landscape view
-        Fragment fragmentLeft =
-                fm.findFragmentById(R.id.left_fragment_container);
+        Fragment fragmentLeft = fm.findFragmentById(R.id.left_fragment_container);
         if (fragmentLeft == null) {
             fm.beginTransaction()
-                    .add(R.id.left_fragment_container, mTingleFragment)
+                    .replace(R.id.left_fragment_container, mTingleFragment)
                     .commit();
         }
 
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements TingleFragment.On
                 fm.findFragmentById(R.id.right_fragment_container);
         if (fragmentRight == null) {
             fm.beginTransaction()
-                    .add(R.id.right_fragment_container, mListFragment)
+                    .replace(R.id.right_fragment_container, mListFragment)
                     .commit();
         }
     }

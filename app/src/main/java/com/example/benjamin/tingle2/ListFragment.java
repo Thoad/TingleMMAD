@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
 import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;
@@ -34,10 +35,12 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
     private TingleBaseHelper mDBHelper;
     private SQLiteDatabase mDatabase;
 
-
     // stuff
     private OnListFragmentInteractionListener mListener;
     private RecyclerView.Adapter mAdapter;
+
+    // Views
+    private ImageButton imageButton;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,6 +68,15 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_thing_list, container, false);
 
+        imageButton = (ImageButton) view.findViewById(R.id.delete_button);
+
+        imageButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                // How to get item clicked when this is a view
+            }
+        });
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -110,8 +122,8 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
 
     @Override
     public void onListFragmentInteraction(Thing thing) {
-        System.out.println("Thing has been deleted from fragment! with id: " + thing.getId());
         mDBHelper.deleteThing(thing, mDatabase);
+        System.out.println("Thing has been deleted from fragment! with id: " + thing.getId());
     }
 
 }

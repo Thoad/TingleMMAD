@@ -10,13 +10,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +43,8 @@ public class TingleFragment extends Fragment implements Observer {
 
     // GUI variables
     private Button addThing, scanButton, showThings;
-    private TextView lastAdded, newWhat, newWhere, noServiceTextview;
+    private TextView lastAdded, noServiceTextview;
+    private EditText newWhat, newWhere;
 
     // Database
     private Context mContext;
@@ -108,8 +108,8 @@ public class TingleFragment extends Fragment implements Observer {
         scanButton = (Button) mParentView.findViewById(R.id.scan_button);
 
         // Textfields for describing a thing
-        newWhat = (TextView) mParentView.findViewById(R.id.what_text);
-        newWhere = (TextView) mParentView.findViewById(R.id.where_text);
+        newWhat = (EditText) mParentView.findViewById(R.id.what_text);
+        newWhere = (EditText) mParentView.findViewById(R.id.where_text);
         noServiceTextview = (TextView) toastLayout.findViewById(R.id.noServiceTextview);
 
         // Click event
@@ -166,10 +166,10 @@ public class TingleFragment extends Fragment implements Observer {
                 System.out.println("Scanning action was succesfull");
 
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                // String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
                 newWhat.setText(contents);
-                // mParentView.invalidate(); // SetText() calls this
+                newWhat.invalidate();
 
                 // Do Outpan Search on another thread
                 Toast.makeText(getActivity().getApplicationContext(), "Checking code online", Toast.LENGTH_SHORT).show();
