@@ -1,5 +1,7 @@
 package com.example.benjamin.tingle2.database;
 
+import java.util.Date;
+
 /**
  * Created by Benjamin on 3/30/2016.
  */

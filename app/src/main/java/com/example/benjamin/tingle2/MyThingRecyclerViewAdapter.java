@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Thing} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyThingRecyclerViewAdapter extends RecyclerView.Adapter<MyThingRecyclerViewAdapter.ViewHolder> {
 
@@ -30,8 +29,12 @@ public class MyThingRecyclerViewAdapter extends RecyclerView.Adapter<MyThingRecy
         mListener = listener;
     }
 
-    public void getThingsAgain(TingleBaseHelper dbH, SQLiteDatabase db){
+    public void setListContents(TingleBaseHelper dbH, SQLiteDatabase db){
         mValues = dbH.getThings(db);
+    }
+
+    public void setListContentsFromList(List<Thing> things){
+        mValues = things;
     }
 
     @Override

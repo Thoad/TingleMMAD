@@ -10,11 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
 import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -104,10 +104,8 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
 
     @Override
     public void update(Observable observable, Object data) {
-
-        ((MyThingRecyclerViewAdapter) mAdapter).getThingsAgain(mDBHelper, mDatabase);
+        ((MyThingRecyclerViewAdapter) mAdapter).setListContents(mDBHelper, mDatabase);
         mAdapter.notifyDataSetChanged();
-        System.out.println("Am i being Called? Yes, But how do i update myself?!? Barcode");
     }
 
     @Override
@@ -116,4 +114,11 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
         System.out.println("Thing has been deleted from fragment! with id: " + thing.getId());
     }
 
+    /**
+     * Set mValues in Adapter to search results in {@param things}
+     * @param things search results
+     */
+    public void updateSearchResults(List<Thing> things){
+        ((MyThingRecyclerViewAdapter) mAdapter).setListContentsFromList(things);
+    }
 }
