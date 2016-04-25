@@ -17,4 +17,5 @@
     <string name="action_settings">Settings</string>
     <string name="e_g_keys">e.g. keys</string>
     <string name="e_g_table">e.g. table</string>
+    <string name="search_for_an_item">Search for an item</string>
 </resources>

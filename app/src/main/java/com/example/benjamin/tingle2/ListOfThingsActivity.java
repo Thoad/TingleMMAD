@@ -11,10 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
-import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
 
 public class ListOfThingsActivity extends AppCompatActivity {
 
@@ -33,36 +35,45 @@ public class ListOfThingsActivity extends AppCompatActivity {
         mDBHelper = new TingleBaseHelper(mContext);
         mDatabase = mDBHelper.getWritableDatabase();
 
+        setContentView(R.layout.activity_thing_list);
+
         // Views
         searchBar = (EditText) findViewById(R.id.search_field);
+        searchBar.setSingleLine(true);
+
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null){
+                if (actionId == IME_ACTION_SEARCH){
                     String searchString = v.getText().toString();
+                    List<Thing> searchResult = searchList(searchString, mDBHelper.getThings(mDatabase));    // searchlist
+                    Collections.sort(searchResult); // Sort the list in ascending natural order based on date added
 
-
+                    ListFragment fragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.list_container);
+                    fragment.updateSearchResults(searchResult);
                     return true;
                 }
                 return false;
             }
         });
 
-        setContentView(R.layout.activity_thing_list);
-
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment =
-                fm.findFragmentById(R.id.list_container);
-        if (fragment == null) {
-            fragment = new ListFragment();
+        Fragment listFragment = fm.findFragmentById(R.id.list_container);
+        if (listFragment == null) {
+            listFragment = new ListFragment();
             fm.beginTransaction()
-                    .add(R.id.list_container, fragment)
+                    .add(R.id.list_container, listFragment)
                     .commit();
+
         }
-
-
     }
 
+    /**
+     * Weak matching of strings
+     * @param searchString String to search for
+     * @param source The source List of Strings to search in
+     * @return A List of passed strings
+     */
     private List<Thing> searchList(String searchString, List<Thing> source){
         List<Thing> result = new ArrayList<>();
 

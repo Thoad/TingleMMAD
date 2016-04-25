@@ -11,7 +11,8 @@
     <EditText android:id="@+id/search_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search for an item"/>
+        android:hint="@string/search_for_an_item"
+        android:imeOptions="actionSearch"/>
 
     <FrameLayout
         android:id="@+id/list_container"

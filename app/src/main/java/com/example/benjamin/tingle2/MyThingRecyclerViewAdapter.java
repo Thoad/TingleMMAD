@@ -18,9 +18,6 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  */
 public class MyThingRecyclerViewAdapter extends RecyclerView.Adapter<MyThingRecyclerViewAdapter.ViewHolder> {
-
-    // Database
-
     private List<Thing> mValues;
     private final OnListFragmentInteractionListener mListener;
 

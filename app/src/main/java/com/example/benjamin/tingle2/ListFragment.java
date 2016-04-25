@@ -120,5 +120,6 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
      */
     public void updateSearchResults(List<Thing> things){
         ((MyThingRecyclerViewAdapter) mAdapter).setListContentsFromList(things);
+        mAdapter.notifyDataSetChanged();
     }
 }
