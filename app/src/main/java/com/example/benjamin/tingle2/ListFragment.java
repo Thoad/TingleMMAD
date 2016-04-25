@@ -1,5 +1,7 @@
 package com.example.benjamin.tingle2;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
 import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;
@@ -110,6 +113,10 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
 
     @Override
     public void onListFragmentInteraction(Thing thing) {
+
+        Dialog dialog = makeDialog(thing);
+        dialog.show();
+
         mDBHelper.deleteThing(thing, mDatabase);
         System.out.println("Thing has been deleted from fragment! with id: " + thing.getId());
     }
@@ -129,5 +136,23 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
     public void simpleUpdate(){
         ((MyThingRecyclerViewAdapter) mAdapter).setListContents(mDBHelper, mDatabase);
         mAdapter.notifyDataSetChanged();
+    }
+    private Dialog makeDialog(Thing thing){
+        AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.thing_dialog, null);
+
+        TextView tvId = (TextView) view.findViewById(R.id.thing_id_tview);
+        tvId.setText(thing.getId());
+        TextView tvDate = (TextView) view.findViewById(R.id.thing_date_tview);
+        tvDate.setText(thing.getDate().toString());
+        TextView tvWhat = (TextView) view.findViewById(R.id.thing_what_tview);
+        tvWhat.setText(thing.getWhat());
+        TextView tvWhere = (TextView) view.findViewById(R.id.thing_where_tview);
+        tvWhere.setText(thing.getWhere());
+
+        ab.setView(view);
+
+        return ab.create();
     }
 }

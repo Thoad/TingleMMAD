@@ -21,7 +21,8 @@
         <activity
             android:name=".ListOfThingsActivity"
             android:label="@string/title_activity_thing_list"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
         </activity>
     </application>
 
