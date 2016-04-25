@@ -40,7 +40,6 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
     private RecyclerView.Adapter mAdapter;
 
     // Views
-    private ImageButton imageButton;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -68,15 +67,6 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_thing_list, container, false);
 
-        imageButton = (ImageButton) view.findViewById(R.id.delete_button);
-
-        imageButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                // How to get item clicked when this is a view
-            }
-        });
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();

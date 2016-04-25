@@ -30,17 +30,6 @@
 
         </LinearLayout>
 
-        <ImageButton android:id="@+id/delete_button"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/delete"
-            android:adjustViewBounds="true"
-            android:maxWidth="40dp"
-            android:maxHeight="40dp"
-            />
-
     </RelativeLayout>
 
     <View
