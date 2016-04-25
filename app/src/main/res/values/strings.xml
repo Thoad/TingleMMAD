@@ -11,7 +11,8 @@
     <string name="where">Where?</string>
     <string name="title_activity_list">ListActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="check_online">Checking code online</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_thing_list">ThingListActivity</string>
     <string name="action_settings">Settings</string>

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -172,7 +173,10 @@ public class TingleFragment extends Fragment implements Observer {
                 newWhat.invalidate();
 
                 // Do Outpan Search on another thread
-                Toast.makeText(getActivity().getApplicationContext(), "Checking code online", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
+                                                    R.string.check_online,
+                                                    Snackbar.LENGTH_LONG);
+                snackbar.show();
 
                 FetchNetworkItemsTask fetcher = new FetchNetworkItemsTask(getContext(), contents);
                 fetcher.execute();

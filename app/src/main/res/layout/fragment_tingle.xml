@@ -1,99 +1,105 @@
-<ScrollView
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.benjamin.tingle2.TingleFragment"
     android:layout_height="match_parent"
-    android:layout_width="match_parent" >
-
-<LinearLayout
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:id="@+id/coordinator_layout">
 
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" >
 
-    <!-- Last thing added (skal nok stå i relation til hinanden horizontalt)-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="26sp"
-        android:text="@string/headline"/>
-
-    <TextView android:id="@+id/last_thing"
-        android:textSize="16sp"
-        android:textColor="#ff0000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <!-- thin horizontal line -->
-    <View
-        android:background="#000000"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"/>
-
-    <!-- What new item -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/what_thing"
-            android:paddingRight="16dp"
-            android:paddingEnd="16dp"
-            android:layout_weight="0"/>
-
-        <EditText android:id="@+id/what_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:hint="@string/e_g_keys"
-            android:layout_weight="1" />
-
-        <Button android:id="@+id/scan_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/scan_text"
-            android:layout_weight="0"/>
-
-    </LinearLayout>
-
-    <!-- Where new item -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:paddingRight="16dp"
-            android:paddingEnd="16dp"
-            android:text="@string/where"/>
-
-        <EditText android:id="@+id/where_text"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:textSize="20sp"
-            android:hint="@string/e_g_table" />
-    </LinearLayout>
-
-    <!-- Button to add new items -->
-    <Button android:id="@+id/add_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/heading_create"/>
-
-    <Button android:id="@+id/show_things_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/to_list_view" />
+            android:layout_height="wrap_content">
 
 
-</LinearLayout>
-</ScrollView>
+            <!-- Last thing added (skal nok stå i relation til hinanden horizontalt)-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="26sp"
+                android:text="@string/headline"/>
+
+            <TextView android:id="@+id/last_thing"
+                android:textSize="16sp"
+                android:textColor="#ff0000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <!-- thin horizontal line -->
+            <View
+                android:background="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
+
+            <!-- What new item -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="@string/what_thing"
+                    android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
+                    android:layout_weight="0"/>
+
+                <EditText android:id="@+id/what_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="@string/e_g_keys"
+                    android:layout_weight="1" />
+
+                <Button android:id="@+id/scan_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/scan_text"
+                    android:layout_weight="0"/>
+
+            </LinearLayout>
+
+            <!-- Where new item -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/where"/>
+
+                <EditText android:id="@+id/where_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="20sp"
+                    android:hint="@string/e_g_table" />
+            </LinearLayout>
+
+            <!-- Button to add new items -->
+            <Button android:id="@+id/add_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/heading_create"/>
+
+            <Button android:id="@+id/show_things_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/to_list_view" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>
