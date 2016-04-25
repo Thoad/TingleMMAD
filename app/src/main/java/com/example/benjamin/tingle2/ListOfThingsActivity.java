@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -46,7 +48,7 @@ public class ListOfThingsActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == IME_ACTION_SEARCH){
                     String searchString = v.getText().toString();
-                    List<Thing> searchResult = searchList(searchString, mDBHelper.getThings(mDatabase));    // searchlist
+                    List<Thing> searchResult = simpleSearch(searchString, mDBHelper.getThings(mDatabase));    // searchlist
                     Collections.sort(searchResult); // Sort the list in ascending natural order based on date added
 
                     ListFragment fragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.list_container);
@@ -54,6 +56,24 @@ public class ListOfThingsActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (searchBar.getText().length() == 0){
+                    ListFragment fragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.list_container);
+                    fragment.simpleUpdate();
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -69,16 +89,16 @@ public class ListOfThingsActivity extends AppCompatActivity {
     }
 
     /**
-     * Weak matching of strings
+     * Searches for the searchString in the List of strings
      * @param searchString String to search for
      * @param source The source List of Strings to search in
      * @return A List of passed strings
      */
-    private List<Thing> searchList(String searchString, List<Thing> source){
+    private List<Thing> simpleSearch(String searchString, List<Thing> source){
         List<Thing> result = new ArrayList<>();
 
         for (Thing thing: source) {
-            if (thing.getWhat().equals(searchString) || thing.getWhere().equals(searchString)){
+            if (thing.getWhat().contains(searchString) || thing.getWhere().contains(searchString)){
                 result.add(thing);
             }
         }

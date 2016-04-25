@@ -122,4 +122,12 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
         ((MyThingRecyclerViewAdapter) mAdapter).setListContentsFromList(things);
         mAdapter.notifyDataSetChanged();
     }
+
+    /**
+     * Fetch data from default datasource
+     */
+    public void simpleUpdate(){
+        ((MyThingRecyclerViewAdapter) mAdapter).setListContents(mDBHelper, mDatabase);
+        mAdapter.notifyDataSetChanged();
+    }
 }
