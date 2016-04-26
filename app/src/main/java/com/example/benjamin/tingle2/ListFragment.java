@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
@@ -31,7 +32,6 @@ import java.util.Observer;
 
 public class ListFragment extends Fragment implements Observer, OnListFragmentInteractionListener {
 
-    // TODO: Customize parameters
     private int mColumnCount = 1;
 
     // Database
@@ -116,9 +116,6 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
     public void onListFragmentInteraction(Thing thing) {
         Dialog dialog = makeDialog(thing);
         dialog.show();
-
-        // mDBHelper.deleteThing(thing, mDatabase);
-        // System.out.println("Thing has been deleted from fragment! with id: " + thing.getId());
     }
 
     /**
@@ -152,8 +149,29 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
         TextView tvWhere = (TextView) view.findViewById(R.id.thing_where_tview);
             tvWhere.setText(thing.getWhere());
 
+        ImageButton iButton = (ImageButton) view.findViewById(R.id.delete_thing_ibutton);
+            iButton.setOnClickListener(new MyClickListener(thing));
+
         ab.setView(view);
 
         return ab.create();
     }
+
+    /**
+     * Class to provide an OnClickListener that takes an argument
+     */
+    private class MyClickListener implements View.OnClickListener{
+        private Thing thing;
+
+        public MyClickListener(Thing thing){
+            this.thing = thing;
+        }
+        @Override
+        public void onClick(View v) {
+            mDBHelper.deleteThing(thing, mDatabase);
+            System.out.println("Thing has been deleted from fragment! with id: " + thing.getId());
+        }
+    }
+
 }
+
