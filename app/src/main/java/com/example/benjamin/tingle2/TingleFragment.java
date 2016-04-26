@@ -1,6 +1,8 @@
 package com.example.benjamin.tingle2;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +28,10 @@ import com.example.benjamin.tingle2.networking.OutpanFetcher;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -42,10 +47,11 @@ import java.util.Observer;
 public class TingleFragment extends Fragment implements Observer {
 
     private String outpanFailureMessage;
+    private Dialog scanDialog;
 
     // GUI variables
     private Button addThing, scanButton, showThings;
-    private TextView lastAdded, noServiceTextview;
+    private TextView lastAdded;
     private EditText newWhat, newWhere;
 
     // Database
@@ -140,11 +146,8 @@ public class TingleFragment extends Fragment implements Observer {
                 System.out.println("Scan pressed. OnClickListener");
 
                 try{
-                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-                    //intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-
-                    startActivityForResult(intent, 0);
+                    scanDialog = showScanDialog();
+                    scanDialog.show();
                 }catch (ActivityNotFoundException anfe){
                     System.out.println("Scanner not found");
                     scanButton.setBackgroundColor(Color.RED);
@@ -157,6 +160,7 @@ public class TingleFragment extends Fragment implements Observer {
 
     //@Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (scanDialog != null){scanDialog.dismiss();}
         if (requestCode == 0) {
             if (resultCode == Activity.RESULT_OK) {
                 // Handle successful scan
@@ -184,11 +188,36 @@ public class TingleFragment extends Fragment implements Observer {
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    private Dialog showScanDialog() throws ActivityNotFoundException{
+        AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.scan_dialog, null);
+
+        Button qrButton = (Button) dialogView.findViewById(R.id.scan_button_qr);
+        Button barcodeButton = (Button) dialogView.findViewById(R.id.scan_button_barcode);
+
+        qrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+
+                startActivityForResult(intent, 0);
+            }
+        });
+        barcodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        ab.setTitle("Scan options");
+        ab.setView(dialogView);
+        return ab.create();
     }
 
     @Override

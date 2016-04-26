@@ -147,11 +147,39 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
                         ThingTable.Cols.DATE +
                         ")"
         );
+        dbInsertTestData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
 
+    }
+
+    /**
+     * Populate db with dummy data
+     */
+    private void dbInsertTestData(SQLiteDatabase db){
+        Thing[] things = new Thing[]{
+            new Thing("Keys", "Desk drawer"),
+            new Thing("Wrench", "Toolbox"),
+            new Thing("Smartphone", "... In your hand"),
+            new Thing("Glasses", "IDK"),
+            new Thing("Bike", "Garage"),
+            new Thing("Wallet", "In your pocket"),
+            new Thing("The cake", "There is no cake, it was a lie"),
+            new Thing("Donald Trump", "www.trumpdonald.org"),
+            new Thing("Multiply search result", "8"),
+            new Thing("Multiply search result", "7"),
+            new Thing("Multiply search result", "6"),
+            new Thing("Multiply search result", "5"),
+            new Thing("Multiply search result", "4"),
+            new Thing("Multiply search result", "3"),
+            new Thing("Multiply search result", "2"),
+            new Thing("Multiply search result", "1"),
+        };
+        for (Thing thing: things) {
+            addThing(thing, db);
+        }
     }
 
 }

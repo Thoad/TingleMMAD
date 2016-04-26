@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
 import com.example.benjamin.tingle2.interfaces.OnListFragmentInteractionListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity implements TingleFragment.OnFragmentInteractionListener{
 
     private FragmentManager fm = null;

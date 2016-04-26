@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
@@ -44,6 +46,7 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
     private RecyclerView.Adapter mAdapter;
 
     // Views
+    Dialog thingDialog;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -114,8 +117,8 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
 
     @Override
     public void onListFragmentInteraction(Thing thing) {
-        Dialog dialog = makeDialog(thing);
-        dialog.show();
+        thingDialog = makeDialog(thing);
+        thingDialog.show();
     }
 
     /**
@@ -170,8 +173,32 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
         @Override
         public void onClick(View v) {
             mDBHelper.deleteThing(thing, mDatabase);
+            displayDeleteMessage(thing);
+            thingDialog.dismiss();
             System.out.println("Thing has been deleted from fragment! with id: " + thing.getId());
         }
+    }
+
+    private void displayDeleteMessage(Thing thing){
+        // Create the Snackbar
+        Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.list_coordinator_layout), "", Snackbar.LENGTH_LONG);
+        // Get the Snackbar's layout view
+        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
+        // Hide the text
+        TextView textView = (TextView) layout.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setVisibility(View.INVISIBLE);
+
+        // Inflate our custom view
+        View snackView = getActivity().getLayoutInflater().inflate(R.layout.no_internet_layout, null);
+        TextView tv = (TextView) snackView.findViewById(R.id.noServiceTextview);
+        ImageView iv = (ImageView) snackView.findViewById(R.id.imageView);
+
+        tv.setText("\"" + thing.getWhat() + "\" was deleted");
+        iv.setImageResource(R.drawable.all_good5050);
+
+        // Add the view to the Snackbar's layout
+        layout.addView(snackView, 0);
+        snackbar.show();
     }
 
 }

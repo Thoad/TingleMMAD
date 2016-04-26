@@ -95,9 +95,10 @@ public class ListOfThingsActivity extends AppCompatActivity {
      */
     private List<Thing> simpleSearch(String searchString, List<Thing> source){
         List<Thing> result = new ArrayList<>();
+        String lower = searchString.toLowerCase();
 
         for (Thing thing: source) {
-            if (thing.getWhat().contains(searchString) || thing.getWhere().contains(searchString)){
+            if (thing.getWhat().toLowerCase().contains(lower) || thing.getWhere().toLowerCase().contains(lower)){
                 result.add(thing);
             }
         }
