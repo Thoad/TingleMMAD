@@ -11,14 +11,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.benjamin.tingle2.database.TingleBaseHelper;
 import com.example.benjamin.tingle2.networking.JsonConvert;
@@ -42,6 +41,8 @@ import java.util.Observer;
  */
 public class TingleFragment extends Fragment implements Observer {
 
+    private String outpanFailureMessage;
+
     // GUI variables
     private Button addThing, scanButton, showThings;
     private TextView lastAdded, noServiceTextview;
@@ -54,9 +55,6 @@ public class TingleFragment extends Fragment implements Observer {
 
     // Parent view
     private View mParentView;
-
-    // Toast layout
-    View toastLayout;
 
     // Listener
     private OnFragmentInteractionListener mListener;
@@ -93,9 +91,6 @@ public class TingleFragment extends Fragment implements Observer {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Toast layout
-        toastLayout = inflater.inflate(R.layout.no_internet_toast, (ViewGroup) getActivity().findViewById(R.id.toastLayout));
-
         // Inflate the layout for this fragment
         mParentView = inflater.inflate(R.layout.fragment_tingle, container, false);
 
@@ -111,7 +106,6 @@ public class TingleFragment extends Fragment implements Observer {
         // Textfields for describing a thing
         newWhat = (EditText) mParentView.findViewById(R.id.what_text);
         newWhere = (EditText) mParentView.findViewById(R.id.where_text);
-        noServiceTextview = (TextView) toastLayout.findViewById(R.id.noServiceTextview);
 
         // Click event
         addThing.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +141,9 @@ public class TingleFragment extends Fragment implements Observer {
 
                 try{
                     Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                    intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                    //intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+
                     startActivityForResult(intent, 0);
                 }catch (ActivityNotFoundException anfe){
                     System.out.println("Scanner not found");
@@ -275,28 +271,31 @@ public class TingleFragment extends Fragment implements Observer {
             if (mException != null){
                 // Display network error message
                 mException.printStackTrace();
-                System.out.println("Show error dialog / toast etc. that reflect right Exception");
 
-                // Display toast with exception
-                if (mException instanceof IOException){
-                    noServiceTextview.setText("Problem with network connection");
+                // Display message with exception
+                if (mException instanceof java.io.FileNotFoundException){ // Apparently this is the exception thrown for this case...
+                    outpanFailureMessage = "Outpan failed to understand what was scanned";
+                }else if (mException instanceof IOException){
+                    outpanFailureMessage = "Problem with network connection";
                 }else if(mException instanceof JSONException){
-                    noServiceTextview.setText("Problem with outpan response JSON conversion");
+                    outpanFailureMessage = "Problem with Outpan response JSON conversion";
                 }else{
-                    noServiceTextview.setText("Unknown problem... sucks.");
+                    outpanFailureMessage = "Unknown problem... sucks.";
                 }
 
-                displayOutanFailureToast();
+                displayNetworkMessage(false);
 
                 return;
             }else{
                 if (!uselessNameChecker(itemName)) {
-                    noServiceTextview.setText("No data from Outpan");
-                    displayOutanFailureToast();
+                    outpanFailureMessage = "No data from Outpan";
+                    displayNetworkMessage(false);
                     return;
                 }
 
                 newWhat.setText(itemName);
+                displayNetworkMessage(true);
+
             }
         }
 
@@ -316,15 +315,31 @@ public class TingleFragment extends Fragment implements Observer {
             return true;
         }
 
-        private void displayOutanFailureToast(){
-            // Display error toast
-            Toast toast = new Toast(getActivity().getApplicationContext());
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(toastLayout);
-            toast.show();
+        private void displayNetworkMessage(boolean positive){
+            // Create the Snackbar
+            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), "", Snackbar.LENGTH_INDEFINITE);
+            // Get the Snackbar's layout view
+            Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
+            // Hide the text
+            TextView textView = (TextView) layout.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setVisibility(View.INVISIBLE);
+
+            // Inflate our custom view
+            View snackView = getActivity().getLayoutInflater().inflate(R.layout.no_internet_layout, null);
+            TextView tv = (TextView) snackView.findViewById(R.id.noServiceTextview);
+            ImageView iv = (ImageView) snackView.findViewById(R.id.imageView);
+
+            if (positive){
+                tv.setText("Outpan reply replaced scanned code");
+                iv.setImageResource(R.drawable.all_good5050);
+            }else {
+                tv.setText(outpanFailureMessage);
+                iv.setImageResource(R.drawable.sucks5050);
+            }
+
+            // Add the view to the Snackbar's layout
+            layout.addView(snackView, 0);
+            snackbar.show();
         }
-
-
     }
 }

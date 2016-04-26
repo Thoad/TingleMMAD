@@ -5,8 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/details_dialog"
-    android:padding="16dp">
+    android:padding="20dp">
 
+    <View
+        android:background="#000000"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -25,6 +32,7 @@
             <TextView android:id="@+id/thing_id_tview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="175dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:text="Placeholder text 1"/>
@@ -43,6 +51,7 @@
             <TextView android:id="@+id/thing_date_tview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="175dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:text="Placeholder text 2"/>
@@ -61,6 +70,7 @@
             <TextView android:id="@+id/thing_what_tview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="175dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:text="Placeholder text 3"/>
@@ -75,10 +85,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:text="Where item:"/>
+                android:text="Where item:" />
             <TextView android:id="@+id/thing_where_tview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="175dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:text="Placeholder text 4"/>

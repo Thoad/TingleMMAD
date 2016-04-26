@@ -152,6 +152,7 @@ public class ListFragment extends Fragment implements Observer, OnListFragmentIn
         ImageButton iButton = (ImageButton) view.findViewById(R.id.delete_thing_ibutton);
             iButton.setOnClickListener(new MyClickListener(thing));
 
+        ab.setTitle("Details!");
         ab.setView(view);
 
         return ab.create();
