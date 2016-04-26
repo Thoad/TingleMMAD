@@ -21,7 +21,7 @@ public class Thing implements Comparable<Thing> {
         mDate = date;
     }
     @Override
-    public String toString() { return oneLine("Item: ","is here: "); }
+    public String toString() { return oneLine("ITEM: ","IS HERE: "); }
     public int getId(){ return mId; }
     public String getWhat() { return mWhat; }
     public void setWhat(String what) { mWhat = what; }
