@@ -119,13 +119,15 @@ public class TingleFragment extends Fragment implements Observer {
             public void onClick(View view) {
                 if ((newWhat.getText().length() >0) && (newWhere.getText().length() >0
                 )){
-                    mDBHelper.addThing( new Thing(
-                                    newWhat.getText().toString(),
-                                    newWhere.getText().toString()
-                            ), mDatabase
+                    Thing thing = new Thing(
+                            newWhat.getText().toString(),
+                            newWhere.getText().toString()
+                    );
+                    mDBHelper.addThing( thing, mDatabase
                     );
                     newWhat.setText(""); newWhere.setText("");
                     updateUI();
+                    displayAddMessage(thing);
                 }
             }
         });
@@ -263,6 +265,27 @@ public class TingleFragment extends Fragment implements Observer {
         }
     }
 
+    private void displayAddMessage(Thing thing){
+        // Create the Snackbar
+        Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), "", Snackbar.LENGTH_LONG);
+        // Get the Snackbar's layout view
+        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
+        // Hide the text
+        TextView textView = (TextView) layout.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setVisibility(View.INVISIBLE);
+
+        // Inflate our custom view
+        View snackView = getActivity().getLayoutInflater().inflate(R.layout.no_internet_layout, null);
+        TextView tv = (TextView) snackView.findViewById(R.id.noServiceTextview);
+        ImageView iv = (ImageView) snackView.findViewById(R.id.imageView);
+
+        tv.setText("\"" + thing.getWhat() + "\" was added");
+        iv.setImageResource(R.drawable.all_good5050);
+
+        // Add the view to the Snackbar's layout
+        layout.addView(snackView, 0);
+        snackbar.show();
+    }
 
 
     /**

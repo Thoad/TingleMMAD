@@ -168,14 +168,14 @@ public class TingleBaseHelper extends SQLiteOpenHelper{
             new Thing("Wallet", "In your pocket"),
             new Thing("The cake", "There is no cake, it was a lie"),
             new Thing("Donald Trump", "www.trumpdonald.org"),
-            new Thing("Multiply search result", "8"),
-            new Thing("Multiply search result", "7"),
-            new Thing("Multiply search result", "6"),
-            new Thing("Multiply search result", "5"),
-            new Thing("Multiply search result", "4"),
-            new Thing("Multiply search result", "3"),
-            new Thing("Multiply search result", "2"),
-            new Thing("Multiply search result", "1"),
+            new Thing("Multiple search result", "8"),
+            new Thing("Multiple search result", "7"),
+            new Thing("Multiple search result", "6"),
+            new Thing("Multiple search result", "5"),
+            new Thing("Multiple search result", "4"),
+            new Thing("Multiple search result", "3"),
+            new Thing("Multiple search result", "2"),
+            new Thing("Multiple search result", "1"),
         };
         for (Thing thing: things) {
             addThing(thing, db);
